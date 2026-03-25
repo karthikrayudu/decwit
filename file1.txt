@@ -1,1 +1,5 @@
-hello
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=AttributeDB;Trusted_Connection=True;"
+  }
+}
