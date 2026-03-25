@@ -1,8 +1,44 @@
-public class AttributeModel
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
+using System.Data;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AttributeController : ControllerBase
 {
-    public List<string> DisplayValues { get; set; }
-    public Guid AttributeId { get; set; }
-    public string Value { get; set; }
-    public string Name { get; set; }
-    public string Type { get; set; }
+    private readonly IConfiguration _config;
+
+    public AttributeController(IConfiguration config)
+    {
+        _config = config;
+    }
+
+    [HttpPost("insert")]
+    public async Task<IActionResult> InsertData([FromBody] List<AttributeModel> data)
+    {
+        try
+        {
+            var json = JsonConvert.SerializeObject(data);
+
+            using (SqlConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await con.OpenAsync();
+
+                using (SqlCommand cmd = new SqlCommand("InsertEntityAttributes", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@JsonData", json);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+
+            return Ok("Data inserted successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
