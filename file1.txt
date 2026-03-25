@@ -1,13 +1,16 @@
-{
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
+[
+  {
+    "DisplayValues": ["2934"],
+    "AttributeId": "3e597c02-22db-4131-a507-8b326d76d87e",
+    "Value": "01/01/2934 00:00:00",
+    "Name": "Attribute ABC",
+    "Type": "Date"
   },
-  "AllowedHosts": "*",
-
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=AttributeDB;Trusted_Connection=True;"
+  {
+    "DisplayValues": ["1X"],
+    "AttributeId": "5b906161-16f8-4105-b7ce-bbf270870e22",
+    "Value": "0.01",
+    "Name": "DK PR Req",
+    "Type": "Numeric"
   }
-}
+]
