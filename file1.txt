@@ -1,5 +1,8 @@
+public class AttributeModel
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=.;Database=AttributeDB;Trusted_Connection=True;"
-  }
+    public List<string> DisplayValues { get; set; }
+    public Guid AttributeId { get; set; }
+    public string Value { get; set; }
+    public string Name { get; set; }
+    public string Type { get; set; }
 }
