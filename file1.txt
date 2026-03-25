@@ -1,44 +1,22 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
-using System.Data;
+var builder = WebApplication.CreateBuilder(args);
 
-[ApiController]
-[Route("api/[controller]")]
-public class AttributeController : ControllerBase
+// Add services
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Middleware
+if (app.Environment.IsDevelopment())
 {
-    private readonly IConfiguration _config;
-
-    public AttributeController(IConfiguration config)
-    {
-        _config = config;
-    }
-
-    [HttpPost("insert")]
-    public async Task<IActionResult> InsertData([FromBody] List<AttributeModel> data)
-    {
-        try
-        {
-            var json = JsonConvert.SerializeObject(data);
-
-            using (SqlConnection con = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                await con.OpenAsync();
-
-                using (SqlCommand cmd = new SqlCommand("InsertEntityAttributes", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@JsonData", json);
-
-                    await cmd.ExecuteNonQueryAsync();
-                }
-            }
-
-            return Ok("Data inserted successfully");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
